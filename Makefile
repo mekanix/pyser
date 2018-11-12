@@ -7,3 +7,6 @@ SERVICES = backend https://github.com/pyserorg/backend \
 
 collect: up
 	@bin/collect.sh
+
+shell: up
+	@sudo cbsd jexec user=devel jname=pyserback /usr/src/bin/shell.sh
