@@ -11,4 +11,5 @@ ls -1 | while read service; do
   git pull
   cd -
 done
+cd ..
 git pull
