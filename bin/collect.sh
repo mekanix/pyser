@@ -13,6 +13,7 @@ else
   ${PROJECT_ROOT}/services/frontend/bin/collect.sh
 fi
 
-rm -rf ${PROJECT_ROOT}/build/*
-cp -r ${PROJECT_ROOT}/services/backend/pyser/static "${PROJECT_ROOT}/build/"
+rm -rf ${PROJECT_ROOT}/build
+mkdir ${PROJECT_ROOT}/build
+cp -r ${PROJECT_ROOT}/services/backend/pyser/static "${PROJECT_ROOT}/build/swaggerui"
 cp -r ${PROJECT_ROOT}/services/frontend/build/* "${PROJECT_ROOT}/build/"
