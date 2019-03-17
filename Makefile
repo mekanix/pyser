@@ -10,7 +10,7 @@ collect: up
 
 publish: collect
 	@ssh new.pyser.org 'cd /usr/cbsd/jails-data/pyserback-data/usr/home/pyser/pyser && git fetch && git reset --hard origin/master'
-	@rsync -rv --delete --progress build/ new.pyser.org:/usr/cbsd/jails-data/nginx-data/usr/local/www/pyser.org/
+	@rsync -rv --delete-after --progress build/ new.pyser.org:/usr/cbsd/jails-data/nginx-data/usr/local/www/pyser.org/
 	@ssh -t new.pyser.org 'sudo cbsd jexec jname=pyserback supervisorctl restart pyser'
 
 shell: up
