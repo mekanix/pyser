@@ -16,4 +16,10 @@ fi
 rm -rf ${PROJECT_ROOT}/build
 mkdir ${PROJECT_ROOT}/build
 cp -r ${PROJECT_ROOT}/services/backend/pyser/static "${PROJECT_ROOT}/build/swaggerui"
-cp -r ${PROJECT_ROOT}/services/frontend/build/* "${PROJECT_ROOT}/build/"
+cp -r ${PROJECT_ROOT}/services/frontend/build/static "${PROJECT_ROOT}/build/"
+cp -r ${PROJECT_ROOT}/services/frontend/build/*.js* "${PROJECT_ROOT}/build/"
+cp -r ${PROJECT_ROOT}/services/frontend/build/public/favicon.ico "${PROJECT_ROOT}/build/"
+cp -r ${PROJECT_ROOT}/services/frontend/build/public/index.html "${PROJECT_ROOT}/build/"
+cp -r ${PROJECT_ROOT}/services/frontend/build/public/robots.txt "${PROJECT_ROOT}/build/"
+cp -r ${PROJECT_ROOT}/services/frontend/build/public/static/js "${PROJECT_ROOT}/build/static/"
+cp -r ${PROJECT_ROOT}/services/frontend/build/public/static/media/* "${PROJECT_ROOT}/build/static/media/"
