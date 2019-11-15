@@ -7,9 +7,9 @@ collect: up
 	@bin/collect.sh
 
 publish: collect
-	@ssh marvin 'cd /usr/cbsd/jails-data/pyserback-data/usr/home/pyser/pyser && git fetch && git reset --hard origin/master'
-	@rsync -rv --delete-after --progress build/ marvin:/usr/cbsd/jails-data/nginx-data/usr/local/www/pyser.org/
-	@ssh -t marvin 'sudo cbsd jexec jname=pyserback supervisorctl restart pyser'
+	@ssh -p 666 pyser.org 'cd /usr/cbsd/jails-data/pyserback-data/usr/home/pyser/pyser && git fetch && git reset --hard origin/master'
+	@rsync -rv --delete-after --progress build/ -e "ssh -p 666" pyser.org:/usr/cbsd/jails-data/nginx-data/usr/local/www/pyser.org/
+	@ssh -t -p 666 pyser.org 'sudo cbsd jexec jname=pyserback supervisorctl restart pyser'
 
 shell: up
 	@sudo cbsd jexec user=devel jname=pyserback /usr/src/bin/shell.sh
