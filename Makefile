@@ -3,18 +3,18 @@ SERVICES = backend https://github.com/pyserorg/backend \
 	   frontend https://github.com/pyserorg/frontend
 
 
-collect: up
-	@bin/collect.sh
+build: up
+	@bin/build.sh
 
-publish: collect
+publish: build
 	@ssh -p 666 pyser.org 'cd /usr/cbsd/jails-data/pyserback-data/usr/home/pyser/pyser && git fetch && git reset --hard origin/master'
-	@rsync -P -rzcv --delete-after build/ -e "ssh -p 666" pyser.org:/usr/cbsd/jails-data/nginx-data/usr/local/www/pyser.org/
-	@ssh -t -p 666 pyser.org 'sudo cbsd jexec jname=pyserback supervisorctl restart pyser'
+	@rsync -P -av --delete-after build/ -e "ssh -p 666" pyser.org:/usr/cbsd/jails-data/nginx-data/usr/local/www/pyser.org/
+	@ssh -t -p 666 pyser.org 'sudo cbsd jexec jname=pyserback service supervisord restart'
 	@ssh -p 2201 pyser.org 'cd /usr/cbsd/jails-data/pyserback-data/usr/home/pyser/pyser && git fetch && git reset --hard origin/master'
-	@rsync -P -rzcv --delete-after build/ -e "ssh -p 2201" pyser.org:/usr/cbsd/jails-data/nginx-data/usr/local/www/pyser.org/
-	@ssh -t -p 2201 pyser.org 'sudo cbsd jexec jname=pyserback supervisorctl restart pyser'
+	@rsync -P -av --delete-after build/ -e "ssh -p 2201" pyser.org:/usr/cbsd/jails-data/nginx-data/usr/local/www/pyser.org/
+	@ssh -t -p 2201 pyser.org 'sudo cbsd jexec jname=pyserback service supervisord restart'
 
 shell: up
-	@sudo cbsd jexec user=devel jname=pyserback /usr/src/bin/shell.sh
+	@${MAKE} ${MFLAGS} -C services/backend shell
 
 .include <${REGGAE_PATH}/mk/project.mk>
