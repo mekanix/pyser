@@ -1,3 +1,4 @@
+USE_FREENIT = YES
 REGGAE_PATH = /usr/local/share/reggae
 SERVICES = backend https://github.com/pyserorg/backend \
 	   frontend https://github.com/pyserorg/frontend
