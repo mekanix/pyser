@@ -30,4 +30,3 @@ else
   tmux split-window -h -p 50 -t 0 "env OFFLINE=${OFFLINE} BACKEND_URL=\"http://${backend_hostname}:5000\" ${PROJECT_ROOT}/services/frontend/bin/devel.sh"
   tmux a -t "${backend_app_name}"
 fi
-

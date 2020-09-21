@@ -3,19 +3,17 @@ REGGAE_PATH = /usr/local/share/reggae
 SERVICES = backend https://github.com/pyserorg/backend \
 	   frontend https://github.com/pyserorg/frontend
 
+collect: up
+	@bin/collect.sh
 
-build: up
-	@bin/build.sh
-
-publish: build
-	@ssh -p 666 pyser.org 'cd /usr/cbsd/jails-data/pyserback-data/usr/home/pyser/pyser && git fetch && git reset --hard origin/master'
-	@rsync -P -av --delete-after build/ -e "ssh -p 666" pyser.org:/usr/cbsd/jails-data/nginx-data/usr/local/www/pyser.org/
-	@ssh -t -p 666 pyser.org 'sudo cbsd jexec jname=pyserback service supervisord restart'
-	@ssh -p 2201 pyser.org 'cd /usr/cbsd/jails-data/pyserback-data/usr/home/pyser/pyser && git fetch && git reset --hard origin/master'
-	@rsync -P -av --delete-after build/ -e "ssh -p 2201" pyser.org:/usr/cbsd/jails-data/nginx-data/usr/local/www/pyser.org/
-	@ssh -t -p 2201 pyser.org 'sudo cbsd jexec jname=pyserback service supervisord restart'
-
-shell: up
-	@${MAKE} ${MFLAGS} -C services/backend shell
+publish: collect
+	@reggae read-pass >passwd
+	@echo
+	@rsync -avc --progress --delete-after build/ deploy@protivkovida.tk:/usr/cbsd/jails-data/nginx-data/usr/local/www/protivkovida.tk/
+	@reggae expect-run passwd Password: ssh -t provision@protivkovida.tk sudo cbsd jexec jname=webbell sudo -u uwsgi git -C /usr/local/repos/webbell fetch
+	@reggae expect-run passwd Password: ssh -t provision@protivkovida.tk sudo cbsd jexec jname=webbell sudo -u uwsgi git -C /usr/local/repos/webbell reset --hard origin/master
+	@reggae expect-run passwd Password: ssh -t provision@protivkovida.tk sudo cbsd jexec jname=webbell sudo -u uwsgi env SYSPKG=yes /usr/local/repos/webbell/bin/init.sh
+	@reggae expect-run passwd Password: ssh -t provision@protivkovida.tk sudo cbsd jexec jname=webbell service uwsgi restart
+	@rm -rf passwd
 
 .include <${REGGAE_PATH}/mk/project.mk>

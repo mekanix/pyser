@@ -10,13 +10,13 @@ export frontend_app_name=${app_name}
 
 
 if [ -f /usr/local/bin/cbsd ]; then
-  sudo cbsd jexec user=devel "jname=${backend_app_name}back" /usr/src/bin/build.sh
-  sudo cbsd jexec user=devel "jname=${frontend_app_name}front" /usr/src/bin/build.sh
+  make -C services/backend collect
+  make -C services/frontend collect
 else
-  ${PROJECT_ROOT}/services/backend/bin/build.sh
-  ${PROJECT_ROOT}/services/frontend/bin/build.sh
+  env SYSPKG=${SYSPKG} ${PROJECT_ROOT}/services/backend/bin/collect.sh
+  env SYSPKG=${SYSPKG} ${PROJECT_ROOT}/services/frontend/bin/collect.sh
 fi
 
 rm -rf ${PROJECT_ROOT}/build/*
-cp -r "${PROJECT_ROOT}/services/backend/${backend_app_name}/static" "${PROJECT_ROOT}/build/"
+cp -r ${PROJECT_ROOT}/services/backend/static "${PROJECT_ROOT}/build/"
 cp -r ${PROJECT_ROOT}/services/frontend/build/* "${PROJECT_ROOT}/build/"
